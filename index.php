@@ -254,7 +254,7 @@ $products = $stmt->fetchAll();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div class="relative">
-                <img src="assets/images/IMG-20260902-WA0084.jpg" alt="Delamoda Active logo" class="w-48 h-48 object-contain mb-8 bg-zinc-950 p-6">
+                <img src="assets/images/IMG-20260902-WA0086.jpg" alt="Delamoda Active logo" class="w-48 h-48 object-contain mb-8 bg-zinc-950 p-6">
                 <h2 class="font-display text-4xl sm:text-5xl font-bold uppercase tracking-tight mb-6">
                     The Delamoda<br><span class="text-rose-600">Standard</span>
                 </h2>

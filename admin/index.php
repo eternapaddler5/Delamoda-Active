@@ -19,15 +19,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove_product') {
+    $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
+
+    if ($productId) {
+        $stmt = $pdo->prepare("UPDATE products SET is_active = 0 WHERE id = ?");
+        $stmt->execute([$productId]);
+    }
+
+    header("Location: index.php?msg=Product+Removed");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_product') {
     $name = $_POST['name'];
     $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
     $price = $_POST['price'];
     $category = $_POST['category'];
-    $image_url = $_POST['image_url'];
+
+    if (!isset($_FILES['product_image']) || $_FILES['product_image']['error'] !== UPLOAD_ERR_OK) {
+        die('Please select a product image.');
+    }
+
+    if ($_FILES['product_image']['size'] > 5 * 1024 * 1024) {
+        die('The product image must be smaller than 5 MB.');
+    }
+
+    $allowedMimeTypes = [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+    ];
+    $mimeType = mime_content_type($_FILES['product_image']['tmp_name']);
+
+    if (!isset($allowedMimeTypes[$mimeType])) {
+        die('Only JPG, PNG, and WebP images are allowed.');
+    }
+
+    $filename = bin2hex(random_bytes(16)) . '.' . $allowedMimeTypes[$mimeType];
+    $uploadDirectory = __DIR__ . '/../assets/images/';
+    $destination = $uploadDirectory . $filename;
+
+    if (!move_uploaded_file($_FILES['product_image']['tmp_name'], $destination)) {
+        die('The product image could not be uploaded.');
+    }
+
+    $imageUrl = 'assets/images/' . $filename;
 
     $stmt = $pdo->prepare("INSERT INTO products (name, slug, price, category, image_url) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $slug, $price, $category, $image_url]);
+    $stmt->execute([$name, $slug, $price, $category, $imageUrl]);
 
     header("Location: index.php?msg=Product+Added");
     exit;
@@ -36,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 $ordersStmt = $pdo->query("SELECT * FROM orders ORDER BY created_at DESC LIMIT 50");
 $orders = $ordersStmt->fetchAll();
 
-$productsStmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC LIMIT 50");
+$productsStmt = $pdo->query("SELECT * FROM products WHERE is_active = 1 ORDER BY created_at DESC LIMIT 50");
 $products = $productsStmt->fetchAll();
 
 $statuses = ['pending', 'processing', 'dispatched', 'delivered', 'cancelled'];
@@ -209,6 +249,13 @@ require 'includes/admin-head.php';
                                         Add
                                     </button>
                                 </form>
+                                <form action="index.php" method="POST" class="mt-2" onsubmit="return confirm('Remove this product from the store?');">
+                                    <input type="hidden" name="action" value="remove_product">
+                                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                    <button type="submit" class="w-full border border-rose-200 text-rose-600 px-4 py-2 text-[10px] font-bold uppercase hover:bg-rose-600 hover:text-white transition-colors">
+                                        Remove Product
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -224,7 +271,7 @@ require 'includes/admin-head.php';
             </div>
 
             <div class="bg-white border border-zinc-200 p-6 sm:p-8 max-w-3xl">
-                <form method="POST" action="index.php" class="space-y-6">
+                <form method="POST" action="index.php" enctype="multipart/form-data" class="space-y-6">
                     <input type="hidden" name="action" value="add_product">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -245,9 +292,9 @@ require 'includes/admin-head.php';
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold uppercase mb-2 tracking-widest text-zinc-500">Image Path</label>
-                            <input type="text" name="image_url" placeholder="assets/images/IMG-20260902-WA0074.jpg" required class="form-input">
-                            <p class="text-[10px] text-zinc-400 mt-1.5">Use paths from <code class="bg-zinc-100 px-1">assets/images/</code></p>
+                            <label class="block text-[10px] font-bold uppercase mb-2 tracking-widest text-zinc-500">Product Image</label>
+                            <input type="file" name="product_image" accept="image/jpeg,image/png,image/webp" required class="form-input">
+                            <p class="text-[10px] text-zinc-400 mt-1.5">JPG, PNG, or WebP. Maximum 5 MB.</p>
                         </div>
                     </div>
 

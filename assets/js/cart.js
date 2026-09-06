@@ -45,6 +45,12 @@ function getCartCount() {
     return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
+function removeFromCart(id) {
+    cart = cart.filter(item => String(item.id) !== String(id));
+    saveCart();
+    renderCheckoutCart();
+}
+
 function updateCartUI() {
     const count = getCartCount();
     const ids = ['cart-count', 'nav-cart-count', 'mobile-cart-count'];
@@ -78,9 +84,13 @@ function renderCheckoutCart() {
                     <h4 class="font-bold uppercase text-sm text-zinc-900"></h4>
                     <p class="text-xs text-zinc-500 mt-0.5">Qty: ${item.quantity}</p>
                 </div>
-                <p class="font-bold text-sm">K${(item.price * item.quantity).toFixed(2)}</p>
+                <div class="flex items-center gap-3">
+                    <p class="font-bold text-sm">K${(item.price * item.quantity).toFixed(2)}</p>
+                    <button type="button" class="remove-cart-item text-rose-500 hover:text-rose-700 text-xs font-bold uppercase" aria-label="Remove item from cart">Remove</button>
+                </div>
             `;
             row.querySelector('h4').textContent = item.name;
+            row.querySelector('.remove-cart-item').addEventListener('click', () => removeFromCart(item.id));
             container.appendChild(row);
         });
     }
