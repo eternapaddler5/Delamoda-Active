@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
+
+:root {
+    --brand-black: #0a0a0a;
+    --brand-charcoal: #18181b;
+    --brand-red: #e11d48;
+    --brand-red-dark: #be123c;
+    --brand-purple: #7c3aed;
+    --brand-coral: #f472b6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.font-display {
+    font-family: 'Oswald', sans-serif;
+}
+
+/* Hero video */
+.hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.hero-video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.55) 0%,
+        rgba(10, 10, 10, 0.35) 40%,
+        rgba(10, 10, 10, 0.75) 100%
+    );
+}
+
+/* Nav */
+.site-nav {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.site-nav.scrolled {
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Image hover zoom */
+.img-zoom {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.group:hover .img-zoom {
+    transform: scale(1.06);
+}
+
+/* Product quick-add */
+.quick-add-btn.added {
+    background-color: #16a34a !important;
+}
+
+/* Marquee trust bar */
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+    animation: marquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* Section reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile menu */
+.mobile-menu {
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu.open {
+    transform: translateX(0);
+}
+
+/* Sticky cart pulse */
+@keyframes cart-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
+}
+
+.cart-fab {
+    animation: cart-pulse 2.5s ease infinite;
+}
+
+.cart-fab:hover {
+    animation: none;
+}
+
+/* Form inputs */
+.form-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid #d4d4d8;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--brand-black);
+    box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.08);
+}
+
+/* Split banner diagonal accent */
+.diagonal-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 50%, var(--brand-red) 50%);
+    opacity: 0.08;
+    pointer-events: none;
+}
