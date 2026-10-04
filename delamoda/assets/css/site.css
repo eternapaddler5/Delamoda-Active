@@ -1,0 +1,854 @@
+/* ==========================================================================
+   Delamoda Active: site.css
+   Step 1 (foundation): Bootstrap 5.3 in dark mode, re-coloured through
+   Bootstrap's own CSS variables. Load AFTER bootstrap.min.css.
+   Change --dm-copper (and -hi / -glow / -rgb) to re-brand the whole site.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Fonts (self-hosted, so the site never calls out to Google)
+   -------------------------------------------------------------------------- */
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/barlow-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../fonts/barlow-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('../fonts/barlow-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Semi Condensed'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('../fonts/barlow-semi-condensed-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Semi Condensed'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('../fonts/barlow-semi-condensed-latin-700-normal.woff2') format('woff2'); }
+
+/* --------------------------------------------------------------------------
+   2. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --dm-bg: #0d1310;             /* page: green-tinted black */
+  --dm-topbar: #090d0b;         /* utility strip and lowest footer band */
+  --dm-surface: #131c18;        /* navbar, dropdowns, modal, cards */
+  --dm-raised: #1a2621;         /* inputs, tabs, icon buttons */
+  --dm-line: #26352e;           /* borders and dividers */
+  --dm-line-strong: #3a4d44;    /* empty stars, breadcrumb dividers */
+  --dm-text: #e6ebe8;
+  --dm-muted: #8ea198;
+  --dm-copper: #e08a4b;         /* the one accent */
+  --dm-copper-rgb: 224, 138, 75;
+  --dm-copper-hi: #f0a468;      /* hover state of the accent */
+  --dm-copper-ink: #1c1108;     /* text that sits on copper */
+  --dm-copper-glow: rgba(224, 138, 75, .16);
+  --dm-ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   3. Bootstrap theming: point Bootstrap's own variables at our tokens
+   -------------------------------------------------------------------------- */
+:root,
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+
+  --bs-body-font-family: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --bs-body-color: var(--dm-text);
+  --bs-body-color-rgb: 230, 235, 232;
+  --bs-body-bg: var(--dm-bg);
+  --bs-body-bg-rgb: 13, 19, 16;
+
+  --bs-emphasis-color: #fff;
+  --bs-emphasis-color-rgb: 255, 255, 255;
+  --bs-heading-color: var(--dm-text);
+
+  --bs-secondary-color: var(--dm-muted);
+  --bs-secondary-color-rgb: 142, 161, 152;
+  --bs-secondary-bg: var(--dm-raised);
+  --bs-secondary-bg-rgb: 26, 38, 33;
+  --bs-tertiary-color: var(--dm-muted);
+  --bs-tertiary-bg: var(--dm-surface);
+  --bs-tertiary-bg-rgb: 19, 28, 24;
+
+  --bs-border-color: var(--dm-line);
+  --bs-border-color-translucent: rgba(230, 235, 232, .08);
+
+  --bs-link-color: var(--dm-copper);
+  --bs-link-color-rgb: 224, 138, 75;
+  --bs-link-hover-color: var(--dm-copper-hi);
+  --bs-link-hover-color-rgb: 240, 164, 104;
+
+  --bs-primary: var(--dm-copper);
+  --bs-primary-rgb: 224, 138, 75;
+  --bs-danger: #e5544b;
+  --bs-danger-rgb: 229, 84, 75;
+
+  /* The "theme color" secondary (drives .bg-secondary, .text-secondary,
+     .border-secondary) is a different variable from --bs-secondary-bg
+     above, which only affects components like cards and dropdowns. */
+  --bs-secondary: var(--dm-raised);
+  --bs-secondary-rgb: 26, 38, 33;
+}
+
+/* --------------------------------------------------------------------------
+   4. Base
+   -------------------------------------------------------------------------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 { font-weight: 600; }
+
+a { text-decoration: none; transition: color .2s; }
+img { max-width: 100%; height: auto; }
+
+::selection { background: var(--dm-copper); color: var(--dm-copper-ink); }
+
+hr { color: var(--dm-line); opacity: 1; }
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+[tabindex]:focus-visible,
+.form-check-input:focus-visible {
+  outline: 2px solid var(--dm-copper);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.form-control:focus-visible,
+.form-select:focus-visible { outline: none; }
+
+/* --------------------------------------------------------------------------
+   5. Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  transition: color .15s, background-color .15s, border-color .15s,
+              box-shadow .25s, translate .2s var(--dm-ease);
+}
+
+.btn-primary {
+  --bs-btn-color: var(--dm-copper-ink);
+  --bs-btn-bg: var(--dm-copper);
+  --bs-btn-border-color: var(--dm-copper);
+  --bs-btn-hover-color: var(--dm-copper-ink);
+  --bs-btn-hover-bg: var(--dm-copper-hi);
+  --bs-btn-hover-border-color: var(--dm-copper-hi);
+  --bs-btn-active-color: var(--dm-copper-ink);
+  --bs-btn-active-bg: var(--dm-copper);
+  --bs-btn-active-border-color: var(--dm-copper);
+  --bs-btn-focus-shadow-rgb: 224, 138, 75;
+  --bs-btn-disabled-color: var(--dm-copper-ink);
+  --bs-btn-disabled-bg: var(--dm-copper);
+  --bs-btn-disabled-border-color: var(--dm-copper);
+  font-weight: 600;
+}
+.btn-primary:hover  { translate: 0 -1px; }
+.btn-primary:active { translate: 0 1px; }
+.btn-primary.btn-shadow { box-shadow: 0 .4rem 1rem -.6rem rgba(224, 138, 75, .5); }
+.btn-primary.btn-shadow:hover { box-shadow: 0 .7rem 1.4rem -.5rem rgba(224, 138, 75, .6); }
+
+.btn-outline-secondary {
+  --bs-btn-color: var(--dm-text);
+  --bs-btn-border-color: var(--dm-line);
+  --bs-btn-hover-color: var(--dm-copper-hi);
+  --bs-btn-hover-bg: var(--dm-raised);
+  --bs-btn-hover-border-color: var(--dm-copper);
+  --bs-btn-active-color: var(--dm-copper-hi);
+  --bs-btn-active-bg: var(--dm-raised);
+  --bs-btn-active-border-color: var(--dm-copper);
+  --bs-btn-focus-shadow-rgb: 224, 138, 75;
+}
+
+.btn-outline-accent {
+  --bs-btn-color: var(--dm-copper);
+  --bs-btn-border-color: var(--dm-copper);
+  --bs-btn-hover-color: var(--dm-copper-ink);
+  --bs-btn-hover-bg: var(--dm-copper);
+  --bs-btn-hover-border-color: var(--dm-copper);
+  --bs-btn-active-color: var(--dm-copper-ink);
+  --bs-btn-active-bg: var(--dm-copper);
+  --bs-btn-active-border-color: var(--dm-copper);
+  --bs-btn-focus-shadow-rgb: 224, 138, 75;
+}
+
+/* --------------------------------------------------------------------------
+   6. Forms
+   -------------------------------------------------------------------------- */
+.form-control,
+.form-select {
+  background-color: var(--dm-raised);
+  border-color: var(--dm-line);
+  color: var(--dm-text);
+  transition: border-color .2s, box-shadow .25s, background-color .2s;
+}
+.form-control::placeholder { color: var(--dm-muted); opacity: .8; }
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--dm-raised);
+  border-color: var(--dm-copper);
+  color: var(--dm-text);
+  box-shadow: 0 0 0 .2rem var(--dm-copper-glow);
+}
+
+.form-check-input {
+  background-color: var(--dm-raised);
+  border-color: var(--dm-line-strong);
+}
+.form-check-input:checked {
+  background-color: var(--dm-copper);
+  border-color: var(--dm-copper);
+}
+.form-check-input:checked[type="checkbox"] {
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231c1108' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+.form-check-input:checked[type="radio"] {
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%231c1108'/%3e%3c/svg%3e");
+}
+.form-check-input:focus {
+  border-color: var(--dm-copper);
+  box-shadow: 0 0 0 .2rem var(--dm-copper-glow);
+}
+.form-check-label { color: var(--dm-muted); }
+.form-text { color: var(--dm-muted); }
+
+/* --------------------------------------------------------------------------
+   7. Dropdowns
+   -------------------------------------------------------------------------- */
+.dropdown-menu {
+  --bs-dropdown-bg: var(--dm-surface);
+  --bs-dropdown-border-color: var(--dm-line);
+  --bs-dropdown-border-radius: .75rem;
+  --bs-dropdown-inner-border-radius: calc(.75rem - 1px);
+  --bs-dropdown-link-color: var(--dm-text);
+  --bs-dropdown-link-hover-color: var(--dm-copper-hi);
+  --bs-dropdown-link-hover-bg: var(--dm-copper-glow);
+  --bs-dropdown-link-active-color: var(--dm-copper-hi);
+  --bs-dropdown-link-active-bg: var(--dm-copper-glow);
+  --bs-dropdown-divider-bg: var(--dm-line);
+  --bs-dropdown-box-shadow: 0 22px 46px -14px rgba(0, 0, 0, .75);
+}
+.dropdown-item { transition: background-color .2s, color .2s, box-shadow .2s; }
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item.active { box-shadow: inset 2px 0 0 var(--dm-copper); }
+
+/* Opacity + the standalone `translate` property, so Popper's inline
+   `transform` positioning is left alone. */
+.dropdown-menu.show { animation: dm-drop .22s var(--dm-ease); }
+
+/* --------------------------------------------------------------------------
+   8. Modal
+   -------------------------------------------------------------------------- */
+.modal {
+  --bs-modal-bg: var(--dm-surface);
+  --bs-modal-color: var(--dm-text);
+  --bs-modal-border-color: var(--dm-line);
+  --bs-modal-border-radius: 1rem;
+  --bs-modal-inner-border-radius: calc(1rem - 1px);
+  --bs-modal-header-border-color: var(--dm-line);
+  --bs-modal-footer-border-color: var(--dm-line);
+  --bs-modal-box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .85);
+}
+.modal-backdrop {
+  --bs-backdrop-bg: #000;
+  --bs-backdrop-opacity: .72;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+/* Rises and scales in; closes the same way in reverse */
+.modal.fade .modal-dialog {
+  opacity: 0;
+  transform: translateY(28px) scale(.97);
+  transition: transform .35s var(--dm-ease), opacity .25s ease-out;
+}
+.modal.show .modal-dialog { opacity: 1; transform: none; }
+
+.btn-close { transition: opacity .2s, rotate .3s var(--dm-ease); }
+.btn-close:hover { rotate: 90deg; }
+
+/* --------------------------------------------------------------------------
+   9. Tabs, accordion, cards, alerts, and the rest
+   -------------------------------------------------------------------------- */
+.nav-tabs {
+  --bs-nav-tabs-border-color: var(--dm-line);
+  --bs-nav-link-color: var(--dm-muted);
+  --bs-nav-link-hover-color: var(--dm-text);
+  --bs-nav-tabs-link-hover-border-color: transparent;
+  --bs-nav-tabs-link-active-color: var(--dm-copper);
+  --bs-nav-tabs-link-active-bg: transparent;
+  --bs-nav-tabs-link-active-border-color: transparent transparent var(--dm-copper);
+}
+.nav-tabs .nav-link { transition: color .2s, border-color .2s; }
+.tab-content > .tab-pane.show.active { animation: dm-rise .3s var(--dm-ease); }
+
+.accordion {
+  --bs-accordion-bg: transparent;
+  --bs-accordion-color: var(--dm-text);
+  --bs-accordion-border-color: var(--dm-line);
+  --bs-accordion-btn-color: var(--dm-text);
+  --bs-accordion-btn-bg: transparent;
+  --bs-accordion-active-color: var(--dm-copper);
+  --bs-accordion-active-bg: var(--dm-raised);
+  --bs-accordion-btn-focus-border-color: var(--dm-line);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 .2rem var(--dm-copper-glow);
+}
+/* Bootstrap's dark mode sets the chevron on the button itself, so this has
+   to match that selector to win. Grey when closed, copper when open. */
+[data-bs-theme="dark"] .accordion-button::after {
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238ea198'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e08a4b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/%3e%3c/svg%3e");
+}
+.accordion-button { transition: background-color .2s, color .2s; }
+.accordion-button.collapsed:hover { background-color: var(--dm-copper-glow); }
+
+.card {
+  --bs-card-bg: var(--dm-surface);
+  --bs-card-color: var(--dm-text);
+  --bs-card-border-color: var(--dm-line);
+  --bs-card-cap-bg: var(--dm-raised);
+}
+
+.alert {
+  border-left-width: 4px;
+  border-radius: .75rem;
+  animation: dm-alert .5s var(--dm-ease) both;
+}
+
+.progress { --bs-progress-bg: var(--dm-raised); }
+
+.breadcrumb {
+  --bs-breadcrumb-divider-color: var(--dm-line-strong);
+  --bs-breadcrumb-item-active-color: var(--dm-text);
+}
+.breadcrumb-item > a { color: var(--dm-muted); }
+.breadcrumb-item > a:hover { color: var(--dm-copper-hi); }
+
+.tooltip {
+  --bs-tooltip-bg: var(--dm-raised);
+  --bs-tooltip-color: var(--dm-text);
+  --bs-tooltip-opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   10. Small utilities. These replace the extra classes the old theme
+       provided, so the existing markup keeps working. Add more here
+       whenever a page needs one.
+   -------------------------------------------------------------------------- */
+.fs-xs   { font-size: .75rem !important; }
+.fs-ms   { font-size: .8125rem !important; }
+.fs-sm   { font-size: .875rem !important; }
+.fs-md   { font-size: 1rem !important; }
+.fs-base { font-size: 1rem !important; }
+.fs-lg   { font-size: 1.125rem !important; }
+.fs-xl   { font-size: 1.25rem !important; }
+
+.fw-medium { font-weight: 500 !important; }
+
+.mt-n1 { margin-top: -.25rem !important; }
+.mt-n2 { margin-top: -.5rem !important; }
+.ms-n3 { margin-left: -1rem !important; }
+.me-n1 { margin-right: -.25rem !important; }
+.me-n4 { margin-right: -1.5rem !important; }
+@media (min-width: 992px) { .me-lg-n3 { margin-right: -1rem !important; } }
+
+.mb-grid-gutter { margin-bottom: 1.875rem !important; }
+.py-grid-gutter { padding-top: 1.875rem !important; padding-bottom: 1.875rem !important; }
+.px-grid-gutter { padding-left: 1.875rem !important; padding-right: 1.875rem !important; }
+
+.text-accent  { color: var(--dm-copper) !important; }
+.text-heading { color: var(--dm-text) !important; }
+.bg-darker    { background-color: var(--dm-topbar) !important; }
+.table-layout-fixed { table-layout: fixed; }
+
+/* --------------------------------------------------------------------------
+   11. Header: topbar, navbar, search, mega menu, cart dropdown
+   -------------------------------------------------------------------------- */
+
+/* Topbar */
+.topbar {
+  background-color: var(--dm-topbar);
+  border-bottom: 1px solid var(--dm-line);
+  font-size: .8125rem;
+}
+.topbar-link { color: var(--dm-muted); }
+.topbar-link:hover { color: var(--dm-copper-hi); }
+.topbar .dropdown-menu { --bs-dropdown-min-width: 8rem; }
+
+/* Navbar shell. Sticks on scroll; .site-header.is-stuck is toggled by JS. */
+.site-header { position: sticky; top: 0; z-index: 1030; }
+.navbar {
+  background-color: var(--dm-surface);
+  border-bottom: 1px solid var(--dm-line);
+  transition: background-color .25s, box-shadow .25s;
+}
+.site-header.is-stuck .navbar {
+  background-color: rgba(19, 28, 24, .92);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, .75);
+}
+
+/* Load-in: a copper line draws under the navbar once, then settles */
+.navbar-brand {
+  animation: dm-brand .7s var(--dm-ease) .1s both;
+}
+.navbar-brand img {
+  border-radius: 10px;
+  transition: transform .35s var(--dm-ease);
+}
+.navbar-brand:hover img { transform: rotate(-6deg) scale(1.06); }
+.navbar-brand-name {
+  font-family: 'Barlow Semi Condensed', 'Barlow', sans-serif;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--dm-text);
+}
+
+.site-header .navbar-collapse {
+  background-image: linear-gradient(90deg, var(--dm-copper) 0, var(--dm-copper) 22%, transparent 100%);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0 2px;
+  animation: dm-draw 1s var(--dm-ease) .15s forwards;
+}
+
+/* Search */
+.navbar-search { position: relative; }
+.navbar-search .bi-search {
+  position: absolute; top: 50%; left: .9rem; translate: 0 -50%;
+  color: var(--dm-muted); pointer-events: none;
+}
+.navbar-search .form-control { padding-left: 2.5rem; }
+
+/* Icon tools (wishlist, account) */
+.navbar-tool {
+  color: var(--dm-text);
+  transition: color .2s;
+}
+.navbar-tool:hover { color: var(--dm-copper); }
+.navbar-tool-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 50%;
+  transition: background-color .25s;
+}
+.navbar-tool:hover .navbar-tool-icon { background-color: var(--dm-copper-glow); }
+.navbar-tool-text small { display: block; color: var(--dm-muted); font-size: .75rem; }
+
+/* Cart trigger + badge */
+.cart-toggle { position: relative; }
+.cart-badge {
+  position: absolute; top: -.2rem; right: -.2rem;
+  min-width: 1.1rem; height: 1.1rem; padding: 0 .3rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background-color: var(--dm-copper);
+  color: var(--dm-copper-ink);
+  font-size: .625rem; font-weight: 600;
+  box-shadow: 0 0 0 2px var(--dm-surface);
+  transition: scale .25s var(--dm-ease);
+}
+.cart-toggle:hover .cart-badge { scale: 1.18; }
+
+.cart-dropdown { width: 21rem; padding: 0; }
+.cart-dropdown-scroll { max-height: 16rem; overflow-y: auto; }
+.cart-item {
+  display: flex; gap: .75rem; align-items: center;
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--dm-line);
+  animation: dm-rise .35s var(--dm-ease) both;
+}
+.cart-item:nth-child(1) { animation-delay: .03s; }
+.cart-item:nth-child(2) { animation-delay: .07s; }
+.cart-item:nth-child(3) { animation-delay: .11s; }
+.cart-item:nth-child(4) { animation-delay: .15s; }
+.cart-item img { width: 56px; height: 56px; object-fit: cover; border-radius: .5rem; flex-shrink: 0; }
+.cart-item-name { color: var(--dm-text); font-size: .8125rem; }
+.cart-item-name:hover { color: var(--dm-copper-hi); }
+.cart-item-remove {
+  color: var(--dm-muted);
+  background: none; border: 0; line-height: 1;
+  transition: color .2s, rotate .3s var(--dm-ease);
+}
+.cart-item-remove:hover { color: #e5544b; rotate: 90deg; }
+.cart-empty { padding: 2.5rem 1rem; text-align: center; color: var(--dm-muted); }
+
+/* Category mega menu */
+.mega-menu { width: min(38rem, 90vw); padding: 1.25rem; }
+.mega-menu-col img {
+  display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
+  border-radius: .75rem; margin-bottom: .75rem;
+  transition: transform .6s var(--dm-ease);
+}
+.mega-menu-col a:hover img { transform: scale(1.05); }
+.mega-menu-col h3 { font-size: 1rem; margin-bottom: .5rem; }
+.mega-menu-col .widget-list-link {
+  display: inline-block; color: var(--dm-muted);
+  transition: color .2s, translate .25s var(--dm-ease);
+}
+.mega-menu-col .widget-list-link:hover { color: var(--dm-copper-hi); translate: 4px 0; }
+
+/* Primary menu: underline wipes in from the left, out to the right */
+.primary-nav .nav-link {
+  position: relative;
+  color: var(--dm-text);
+  font-weight: 500;
+}
+.primary-nav .nav-link:hover,
+.primary-nav .nav-item.show > .nav-link { color: var(--dm-copper); }
+
+@media (min-width: 992px) {
+  .primary-nav .nav-item > .nav-link::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: .1rem;
+    height: 2px; background-color: var(--dm-copper);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform .35s var(--dm-ease);
+  }
+  .primary-nav .nav-item > .nav-link:hover::after,
+  .primary-nav .nav-item.show > .nav-link::after {
+    transform: scaleX(1); transform-origin: left;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Product page
+   -------------------------------------------------------------------------- */
+
+/* Page title band */
+.page-title-band {
+  background-color: var(--dm-topbar);
+  border-bottom: 1px solid var(--dm-line);
+}
+
+/* Star ratings: filled/half use text-accent, empty stars use --dm-line-strong */
+.star-rating i { color: var(--dm-line-strong); font-size: .85em; }
+.star-rating i.filled,
+.star-rating i.half { color: var(--dm-copper-hi); }
+
+/* Gallery */
+.product-gallery-thumbs a {
+  display: block;
+  border: 1px solid var(--dm-line);
+  border-radius: .5rem;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.product-gallery-thumbs a:hover { border-color: var(--dm-line-strong); }
+.product-gallery-thumbs a.active { border-color: var(--dm-copper); }
+.product-gallery-thumbs img { aspect-ratio: 1/1; object-fit: cover; }
+
+.product-gallery-main {
+  position: relative;
+  border-radius: .75rem;
+  overflow: hidden;
+  background-color: var(--dm-raised);
+}
+.product-gallery-main img { width: 100%; display: block; }
+/* Drift's zoom pane needs a positioned ancestor; this box is it */
+.drift-zoom-pane { z-index: 20; }
+
+/* Wishlist (also used on product cards below) */
+.btn-wishlist {
+  display: inline-flex; align-items: center; justify-content: center;
+  background-color: var(--dm-raised);
+  border: 1px solid var(--dm-line);
+  color: var(--dm-muted);
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 50%;
+  transition: color .2s, border-color .2s, background-color .2s, scale .2s var(--dm-ease);
+}
+.btn-wishlist:hover {
+  background-color: rgba(229, 84, 75, .1);
+  border-color: rgba(229, 84, 75, .5);
+  color: #e5544b;
+}
+.btn-wishlist.active { color: #e5544b; border-color: rgba(229, 84, 75, .5); }
+.btn-wishlist:active { scale: .92; }
+
+/* Colour swatches */
+.color-swatch-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.color-swatch-label {
+  display: inline-block;
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  border: 2px solid var(--dm-line);
+  cursor: pointer;
+  background-size: cover;
+  transition: border-color .2s, scale .15s var(--dm-ease);
+}
+.color-swatch-input:checked + .color-swatch-label { border-color: var(--dm-copper); scale: 1.08; }
+.color-swatch-input:focus-visible + .color-swatch-label { outline: 2px solid var(--dm-copper); outline-offset: 2px; }
+
+.product-badge-available { color: #4ac37f; font-size: .875rem; }
+
+/* Share buttons */
+.btn-share {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem .75rem;
+  border-radius: 2rem;
+  border: 1px solid var(--dm-line);
+  color: var(--dm-muted);
+  font-size: .8125rem;
+  transition: translate .2s var(--dm-ease), border-color .2s, color .2s;
+}
+.btn-share:hover { translate: 0 -2px; border-color: var(--dm-line-strong); color: var(--dm-text); }
+
+/* Reviews */
+.review-avatar { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; }
+
+.btn-vote {
+  background-color: transparent;
+  border: 1px solid var(--dm-line);
+  color: var(--dm-muted);
+  border-radius: 2rem;
+  padding: .2rem .7rem;
+  font-size: .8125rem;
+  transition: color .2s, border-color .2s, background-color .2s, scale .15s var(--dm-ease);
+}
+.btn-vote.btn-like:hover    { background-color: rgba(74, 195, 127, .1); border-color: rgba(74, 195, 127, .5); color: #4ac37f; }
+.btn-vote.btn-dislike:hover { background-color: rgba(229, 84, 75, .1); border-color: rgba(229, 84, 75, .5); color: #e5544b; }
+.btn-vote:active { scale: .94; }
+
+/* Product cards (used here and on future shop/listing pages) */
+.product-card {
+  background-color: var(--dm-surface);
+  border: 1px solid var(--dm-line);
+  border-radius: .75rem;
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .25s;
+  position: relative;
+}
+.product-card:hover { border-color: var(--dm-line-strong); box-shadow: 0 16px 30px -18px rgba(0, 0, 0, .6); }
+.product-card .card-img-wrap { display: block; overflow: hidden; aspect-ratio: 1/1; background-color: var(--dm-raised); }
+.product-card .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: scale .6s var(--dm-ease); }
+.product-card:hover .card-img-wrap img { scale: 1.06; }
+.product-card .btn-wishlist { position: absolute; top: .75rem; right: .75rem; z-index: 2; width: 2rem; height: 2rem; }
+.product-card .card-sale-badge { position: absolute; top: .75rem; left: .75rem; z-index: 2; }
+.product-card .card-body { padding: .75rem 1rem 1rem; }
+.product-card .card-meta { color: var(--dm-muted); font-size: .75rem; }
+.product-card .card-title a { color: var(--dm-text); font-size: .875rem; font-weight: 500; transition: color .2s; }
+.product-card .card-title a:hover { color: var(--dm-copper); }
+
+/* Horizontal product carousel: CSS scroll-snap, no JS library needed */
+.hscroll {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1px;
+  padding-bottom: .5rem;
+  margin: 0 -.25rem;
+  padding-inline: .25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dm-line-strong) transparent;
+}
+.hscroll::-webkit-scrollbar { height: 6px; }
+.hscroll::-webkit-scrollbar-thumb { background-color: var(--dm-line-strong); border-radius: 3px; }
+.hscroll > * {
+  flex: 0 0 auto;
+  width: 78%;
+  scroll-snap-align: start;
+}
+@media (min-width: 500px) { .hscroll > * { width: 47%; } }
+@media (min-width: 768px) { .hscroll > * { width: 31%; } }
+@media (min-width: 1100px) { .hscroll > * { width: 23%; } }
+
+.hscroll-nav {
+  width: 2.75rem; height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--dm-raised);
+  border: 1px solid var(--dm-line);
+  color: var(--dm-text);
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.hscroll-nav:hover {
+  background-color: var(--dm-copper);
+  border-color: var(--dm-copper);
+  color: var(--dm-copper-ink);
+}
+.hscroll-nav:disabled { opacity: .35; pointer-events: none; }
+
+/* --------------------------------------------------------------------------
+   13. Footer, mobile toolbar, back-to-top button
+   -------------------------------------------------------------------------- */
+html { scroll-behavior: smooth; }
+
+.site-footer {
+  background-color: var(--dm-surface);
+  border-top: 1px solid var(--dm-line);
+}
+.footer-band { background-color: var(--dm-topbar); }
+.footer-hr { border-color: var(--dm-line); opacity: 1; }
+
+.text-light { color: var(--dm-text) !important; }
+
+.footer-link { color: var(--dm-muted); transition: color .2s; }
+.footer-link:hover { color: var(--dm-copper-hi); }
+
+.btn-social {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5rem; height: 2.5rem;
+  margin-left: .5rem;
+  border-radius: 50%;
+  background-color: var(--dm-raised);
+  color: var(--dm-muted);
+  transition: background-color .2s, color .2s, translate .2s var(--dm-ease);
+}
+.btn-social:hover {
+  background-color: var(--dm-copper);
+  color: var(--dm-copper-ink);
+  translate: 0 -2px;
+}
+
+/* Bottom toolbar on phones */
+.handheld-toolbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 1030;
+  background-color: var(--dm-surface);
+  border-top: 1px solid var(--dm-line);
+  box-shadow: 0 -12px 30px -16px rgba(0, 0, 0, .75);
+}
+.handheld-toolbar-item {
+  padding: .5rem 0;
+  text-align: center;
+  color: var(--dm-muted);
+  transition: color .2s;
+}
+.handheld-toolbar-item:hover,
+.handheld-toolbar-item:focus { color: var(--dm-copper-hi); }
+.handheld-toolbar-badge {
+  position: absolute; top: -.4rem; right: -.7rem;
+  font-size: .6rem;
+}
+/* Leave room at the foot of the page so this bar never covers content */
+@media (max-width: 991.98px) { body { padding-bottom: 3.75rem; } }
+
+/* Back to top */
+.btn-scroll-top {
+  position: fixed;
+  right: 1.25rem; bottom: 1.25rem;
+  z-index: 1030;
+  width: 2.75rem; height: 2.75rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background-color: var(--dm-raised);
+  border: 1px solid var(--dm-line);
+  color: var(--dm-text);
+  opacity: 0;
+  translate: 0 8px;
+  pointer-events: none;
+  transition: opacity .25s, translate .25s var(--dm-ease), background-color .2s, border-color .2s, color .2s;
+}
+.btn-scroll-top.is-visible { opacity: 1; translate: 0 0; pointer-events: auto; }
+.btn-scroll-top:hover { background-color: var(--dm-copper); border-color: var(--dm-copper); color: var(--dm-copper-ink); }
+@media (max-width: 991.98px) { .btn-scroll-top { bottom: 4.75rem; } }
+
+/* --------------------------------------------------------------------------
+   14. Home page: hero carousel, category banners, widgets, CTA cards
+   -------------------------------------------------------------------------- */
+
+/* Hero carousel: full-width slides with a colour panel standing in for
+   photography until real hero images are supplied. */
+.hero-carousel { overflow: hidden; border-radius: .75rem; }
+.hero-carousel .carousel-item {
+  min-height: 22rem;
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 992px) { .hero-carousel .carousel-item { min-height: 28rem; } }
+.hero-slide-inner { max-width: 34rem; }
+.hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next { width: 4rem; opacity: .8; }
+.hero-carousel .carousel-control-prev:hover,
+.hero-carousel .carousel-control-next:hover { opacity: 1; }
+.hero-carousel .carousel-indicators [data-bs-target] {
+  width: 1.75rem; height: 3px;
+  border: 0; border-radius: 2px;
+  background-color: rgba(255, 255, 255, .45);
+  opacity: 1;
+}
+.hero-carousel .carousel-indicators .active { background-color: #fff; }
+
+/* Category banner (For Women / For Men / For Kids) */
+.category-banner {
+  background-color: var(--dm-surface);
+  border: 1px solid var(--dm-line);
+  border-radius: .75rem;
+  height: 100%;
+}
+.category-banner-link { color: var(--dm-copper); transition: color .2s; }
+.category-banner-link:hover { color: var(--dm-copper-hi); }
+
+/* Small round prev/next used next to a category heading (named hscroll groups) */
+.hscroll-nav-sm {
+  width: 2.25rem; height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--dm-raised);
+  border: 1px solid var(--dm-line);
+  color: var(--dm-text);
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.hscroll-nav-sm:hover { background-color: var(--dm-copper); border-color: var(--dm-copper); color: var(--dm-copper-ink); }
+.hscroll-nav-sm:disabled { opacity: .35; pointer-events: none; }
+
+/* Mini product widgets (Bestsellers / New arrivals) */
+.widget-title { color: var(--dm-text); font-size: 1rem; margin-bottom: 1rem; }
+.widget-product-row { border-bottom: 1px solid var(--dm-line); }
+.widget-product-row:last-of-type { border-bottom: 0; }
+.widget-product-row img { width: 56px; height: 56px; object-fit: cover; border-radius: .5rem; }
+.widget-product-title { color: var(--dm-text); font-size: .875rem; transition: color .2s; }
+.widget-product-title:hover { color: var(--dm-copper); }
+
+/* Promo / CTA panels (blog, Instagram) */
+.cta-panel {
+  display: block;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  border-radius: .75rem;
+  background-color: var(--dm-surface);
+  border: 1px solid var(--dm-line);
+  transition: border-color .2s, translate .2s var(--dm-ease);
+}
+.cta-panel:hover { border-color: var(--dm-copper); translate: 0 -2px; }
+.cta-panel i { font-size: 1.75rem; color: var(--dm-copper); }
+
+/* Brand-name chips, used instead of a logo grid: this is a single-brand
+   store, so there's no third-party "shop by brand" list to show yet. */
+.chip { display: inline-block; padding: .4rem .9rem; margin: .25rem; border-radius: 2rem; background-color: var(--dm-raised); border: 1px solid var(--dm-line); color: var(--dm-muted); font-size: .8125rem; }
+
+/* --------------------------------------------------------------------------
+   15. Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes dm-draw {
+  from { background-size: 0 2px; }
+  to   { background-size: 100% 2px; }
+}
+@keyframes dm-brand {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes dm-drop {
+  from { opacity: 0; translate: 0 -8px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes dm-rise {
+  from { opacity: 0; translate: 0 8px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes dm-alert {
+  from { opacity: 0; transform: translateY(-12px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   16. Respect "reduce motion"
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

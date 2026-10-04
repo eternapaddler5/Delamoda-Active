@@ -1,0 +1,8 @@
+Third-party files used by this site (all free for commercial use):
+
+Bootstrap 5.3.8            MIT License                  https://getbootstrap.com
+Bootstrap Icons 1.13.1     MIT License                  https://icons.getbootstrap.com
+Drift 1.5.1 (image zoom)   BSD-2-Clause                 https://github.com/imgix/drift
+Barlow, Barlow Semi Condensed (fonts)   SIL Open Font License 1.1   https://github.com/jpt/barlow
+
+Everything else (site.css, site.js and the pages) is written for Delamoda Active.
